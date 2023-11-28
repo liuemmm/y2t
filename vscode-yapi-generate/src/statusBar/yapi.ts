@@ -1,6 +1,6 @@
 import { window, commands, StatusBarItem, StatusBarAlignment } from 'vscode'
 import {
-  zhCN2EN,
+  getProjectName,
   initAxios,
   Login,
   getGroupList,
@@ -8,10 +8,14 @@ import {
   getModularList,
   getApiList,
   generateDeclaration,
-  generateInterface
+  generateInterface,
 } from 'y2t'
 import { state } from '../store'
-import { YapiStatusBarCommandType, YapiStatusBarText, MenuEnums } from '../enums'
+import {
+  YapiStatusBarCommandType,
+  YapiStatusBarText,
+  MenuEnums,
+} from '../enums'
 import { getWorkSpaceY2tConfig, handleYapiListToQuickMenu } from '../utils'
 import { createProgressView } from '../utils/progress'
 import { setApiCache } from '../utils/apiCache'
@@ -87,19 +91,26 @@ const registerStatusCommands = async (key: YapiStatusBarCommandType) => {
 const fetchYapiMenus = async (type: MenuEnums, id?: number) => {
   if (type === MenuEnums.group) {
     const groupList = await getGroupList()
-    const menu = await window.showQuickPick(handleYapiListToQuickMenu(type, groupList))
+    const menu = await window.showQuickPick(
+      handleYapiListToQuickMenu(type, groupList),
+    )
     return { type, menu }
   }
   if (!id) return { type, menu: undefined }
   if (type === MenuEnums.project) {
     const projectList = await getProjectList(id)
-    const menu = await window.showQuickPick(handleYapiListToQuickMenu(type, projectList))
+    const menu = await window.showQuickPick(
+      handleYapiListToQuickMenu(type, projectList),
+    )
     return { type, menu }
   }
   const { modularList } = await getModularList(id)
-  const modularMenus = await window.showQuickPick(handleYapiListToQuickMenu(type, modularList), {
-    canPickMany: true
-  })
+  const modularMenus = await window.showQuickPick(
+    handleYapiListToQuickMenu(type, modularList),
+    {
+      canPickMany: true,
+    },
+  )
   return { type, menu: modularMenus }
 }
 
@@ -108,7 +119,10 @@ const fetchYapiMenus = async (type: MenuEnums, id?: number) => {
  * @Date: 2021-07-13 17:20:37
  * @Description: 整合菜单
  */
-const handlePickMenus = async (type: MenuEnums, menu?: QuickMenuItem | QuickMenuItem[]) => {
+const handlePickMenus = async (
+  type: MenuEnums,
+  menu?: QuickMenuItem | QuickMenuItem[],
+) => {
   // 未选择菜单选项
   if (menu === undefined) return
   // 选择分组或项目
@@ -116,10 +130,10 @@ const handlePickMenus = async (type: MenuEnums, menu?: QuickMenuItem | QuickMenu
     const { id } = menu
     // 记录项目名称、基础请求路径 方便后续生成文件
     if (type === MenuEnums.project) {
-      const label = await zhCN2EN(menu.label)
+      const label = getProjectName()
       state.projectInfo = {
         ...menu,
-        label
+        label,
       }
     }
     // 返回上一层菜单
@@ -146,7 +160,9 @@ const handlePickMenus = async (type: MenuEnums, menu?: QuickMenuItem | QuickMenu
  */
 const handleGenerateFiles = async (menu: QuickMenuItem[]) => {
   const { id: projectId, label: projectName, basepath } = state.projectInfo
-  const progressView = createProgressView(`项目：${projectName} 开始生成api与声明文件`)
+  const progressView = createProgressView(
+    `项目：${projectName} 开始生成api与声明文件`,
+  )
   progressView.show()
   // 已完成进度
   let count = 1
@@ -160,17 +176,26 @@ const handleGenerateFiles = async (menu: QuickMenuItem[]) => {
       // 更新进度信息
       progressView.update(`(${count}/${menu.length})`, increment)
       // 调用生成文件函数
-      const list = await generateFile(projectId, projectName, modularId, modularName, basepath)
+      const list = await generateFile(
+        projectId,
+        projectName,
+        modularId,
+        modularName,
+        basepath,
+      )
       apis.push(...list)
       // 防止进度条溢出
       count < menu.length && count++
     } catch (error) {
       progressView.close()
       window.showErrorMessage(
-        error.message || `项目：${projectName} 模块：${count}/${menu.length} 生成失败`
+        error.message ||
+          `项目：${projectName} 模块：${count}/${menu.length} 生成失败`,
       )
       console.error(error)
-      throw new Error(`项目：${projectName} 模块：${count}/${menu.length} 生成失败`)
+      throw new Error(
+        `项目：${projectName} 模块：${count}/${menu.length} 生成失败`,
+      )
     }
   }
   progressView.close()
@@ -179,10 +204,12 @@ const handleGenerateFiles = async (menu: QuickMenuItem[]) => {
     .map((item) => `${item.path} Response解析失败`)
   const errorTips =
     errorApiIds.length > 0
-      ? `有以下${errorApiIds.length}个接口不规范, 已默认使用any代替\r\n${errorApiIds.join('\r\n')}`
+      ? `有以下${
+          errorApiIds.length
+        }个接口不规范, 已默认使用any代替\r\n${errorApiIds.join('\r\n')}`
       : ''
   window.showInformationMessage(
-    `项目：${projectName} 模块：${count}/${menu.length} 生成完毕 ${errorTips}`
+    `项目：${projectName} 模块：${count}/${menu.length} 生成完毕 ${errorTips}`,
   )
 }
 
@@ -196,7 +223,7 @@ export const generateFile = async (
   projectName: string,
   modularId: number,
   modularName: string,
-  basepath: string
+  basepath: string,
 ) => {
   // 获取api接口列表
   const list = await getApiList(modularId)

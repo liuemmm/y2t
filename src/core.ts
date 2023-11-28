@@ -4,11 +4,20 @@ import { getGroupList } from './yapi/group'
 import { getProjectList } from './yapi/project'
 import { getModularList } from './yapi/modular'
 import { getApiList } from './yapi/api'
-import { zhCN2EN } from './utils/name'
+import { getProjectName } from './utils/name'
 import { generateInterface } from './generate/interface'
 import { generateDeclaration } from './generate/declaration'
-import { getUpdateList, generateUpdateInterface, getCacheList } from './generate/diff'
-import { setConfigRootPath, generateDefaultConfig, existConfig, getConfig } from './utils/config'
+import {
+  getUpdateList,
+  generateUpdateInterface,
+  getCacheList,
+} from './generate/diff'
+import {
+  setConfigRootPath,
+  generateDefaultConfig,
+  existConfig,
+  getConfig,
+} from './utils/config'
 export {
   // 设置配置文件根路径
   setConfigRootPath,
@@ -40,7 +49,6 @@ export {
   getUpdateList,
   // 生成更新的接口文件
   generateUpdateInterface,
-
   // 工具类
-  zhCN2EN
+  getProjectName,
 }

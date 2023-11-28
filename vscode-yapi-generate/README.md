@@ -1,5 +1,8 @@
 # Y2T
 
+解决 Y2T 有道翻译接口失效，无法使用问题
+生成文件夹名称改为采用 package.json 中的项目名
+
 > Yapi 生成 Typescript`请求方法`及`声明文件`工具
 
 ## 插件使用
@@ -8,15 +11,15 @@
 
 根据 yapi 的层级划分，可以分为以下三个概念：
 
-`分组`：可以理解为业务线，例如公司下的部门A，部门B，部门C等等…
+`分组`：可以理解为业务线，例如公司下的部门 A，部门 B，部门 C 等等…
 
-`项目`：可以理解为后端的微服务，例如 部门A下的`营销` 下面会分为 `market_api`、`admin_api`、`wechat_api`等…
+`项目`：可以理解为后端的微服务，例如 部门 A 下的`营销` 下面会分为 `market_api`、`admin_api`、`wechat_api`等…
 
 `模块`：可以理解为某个服务中的业务模块，例如 `营销`下面`market_api`服务的`周年庆活动`
 
 层级关系：`分组` → `项目` → `模块`
 
-y2t支持的细粒度在`模块`这一层，只能针对模块进行生成
+y2t 支持的细粒度在`模块`这一层，只能针对模块进行生成
 
 ### 功能入口
 
@@ -47,8 +50,6 @@ y2t支持的细粒度在`模块`这一层，只能针对模块进行生成
 `清除API工作区缓存`：则可以进行清除缓存，主要用于本地缓存紊乱时的状态恢复
 
 ![image-20210804161024614](https://wynne-typora.oss-cn-beijing.aliyuncs.com/typora/image-20210804161024614.png)
-
-
 
 ## 配置文件
 
@@ -91,18 +92,17 @@ module.exports = {
 
 ### 配置具体说明
 
-* `account`：账号，这里不使用yapi的token主要有两个原因：
-  1. 为了能够根据账号进行yapi的权限区分
-  2. token只能获取到`项目`级别，无法进行分组级别的筛选
-* `password`：密码
-* `originUrl`：Yapi 网址地址
-* `outDir`：输出目录，相对于当前工作区的根目录
-* `fetchModule`：请求方法声明模块，这里主要是防止对`axios`进行了二次封装的场景下可以正确定义
-* `projectMapping`：项目映射。在微服务盛行的现在一个工程中可能会有多个 api 地址，所以这里按照`项目id`进行了请求方法映射。
-  * `projectId`：项目 ID，例如url:https://xxx.xxx.com/project/216/interface/api，其中216即为项目ID
-  * `exportName`：请求方法名称，为了兼容不同的请求库，所以生成的代码中不会直接生成 ajax 请求方法，需要外部传入，这里的`exportName`一般就是你配置好了的`axios`实例
-  * `wrapper`：默认的返回体，如果接口有默认的返回包体时，可以通过`wrapper`定义 response，其中`T`代表返回的具体 data
-* `requestFilePath`：请求方法的文件路径，也就是封装`axios`请求方法的文件路径，这里最好使用`@`别名或者`src`等相对路径
-* `tsIgnore`：是否开启`tslint`忽略
-* `esLintIgnore`：是否开启`esLintIgnore`忽略
-
+- `account`：账号，这里不使用 yapi 的 token 主要有两个原因：
+  1. 为了能够根据账号进行 yapi 的权限区分
+  2. token 只能获取到`项目`级别，无法进行分组级别的筛选
+- `password`：密码
+- `originUrl`：Yapi 网址地址
+- `outDir`：输出目录，相对于当前工作区的根目录
+- `fetchModule`：请求方法声明模块，这里主要是防止对`axios`进行了二次封装的场景下可以正确定义
+- `projectMapping`：项目映射。在微服务盛行的现在一个工程中可能会有多个 api 地址，所以这里按照`项目id`进行了请求方法映射。
+  - `projectId`：项目 ID，例如 url:https://xxx.xxx.com/project/216/interface/api，其中216即为项目ID
+  - `exportName`：请求方法名称，为了兼容不同的请求库，所以生成的代码中不会直接生成 ajax 请求方法，需要外部传入，这里的`exportName`一般就是你配置好了的`axios`实例
+  - `wrapper`：默认的返回体，如果接口有默认的返回包体时，可以通过`wrapper`定义 response，其中`T`代表返回的具体 data
+- `requestFilePath`：请求方法的文件路径，也就是封装`axios`请求方法的文件路径，这里最好使用`@`别名或者`src`等相对路径
+- `tsIgnore`：是否开启`tslint`忽略
+- `esLintIgnore`：是否开启`esLintIgnore`忽略

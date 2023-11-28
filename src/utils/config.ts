@@ -10,8 +10,19 @@ let configRootPath = process.cwd()
  * @author Wynne
  * @date 2021-07-02
  */
-function configPath () {
+
+function configPath() {
   return path.resolve(configRootPath, './ygt.config.js')
+}
+
+/**
+ * @description 获取配置文件根目录
+ * @author liuyangemmm
+ * @date 2023-11-28
+ */
+
+export function getConfigRootPath() {
+  return configRootPath
 }
 
 /**
@@ -21,7 +32,7 @@ function configPath () {
  * @export
  * @param root
  */
-export function setConfigRootPath (root: string): void {
+export function setConfigRootPath(root: string): void {
   configRootPath = root
 }
 
@@ -32,7 +43,7 @@ export function setConfigRootPath (root: string): void {
  * @export
  * @return {*}
  */
-export function getConfig (): IConfig {
+export function getConfig(): IConfig {
   if (!existConfig()) {
     throw new Error('ygt.config.js 配置文件不存在')
   }
@@ -82,7 +93,7 @@ export const initConfig = async (): Promise<void> => {
       type: 'confirm',
       message: '已存在本地配置，是否覆盖？',
       name: 'isOverlap',
-      default: false
+      default: false,
     })
     if (!res.isOverlap) {
       clg('red', '已取消生成配置')
@@ -99,6 +110,9 @@ export const initConfig = async (): Promise<void> => {
  * @date 2021-06-25
  */
 export const generateDefaultConfig = (): void => {
-  const originPath = path.resolve(__dirname, '../templates/configTemplate/ygt.config.js')
+  const originPath = path.resolve(
+    __dirname,
+    '../templates/configTemplate/ygt.config.js',
+  )
   fs.copyFileSync(originPath, configPath())
 }
