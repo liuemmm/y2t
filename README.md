@@ -1,10 +1,17 @@
 # Y2T
 
+解决 Y2T 有道翻译接口失效，无法使用问题
+生成文件夹名称改为采用 package.json 中的项目名
+
+`vscode插件`：在插件市场搜索`y2t-f`，安装即可
+
+以下类容与[原文](https://github.com/SewerKing/y2t#readme)相同
+
 > Yapi 生成 Typescript`请求方法`及`声明文件`工具
 
 ## 插件安装
 
-Y2T提供了2种使用形式：
+Y2T 提供了 2 种使用形式：
 
 1. `全局包`：使用`npm install -g y2t`全局安装即可
 
@@ -12,25 +19,21 @@ Y2T提供了2种使用形式：
 
    这里更推荐使用`vscode插件`，因为可以跟着插件版本号升级自动升级，而不需要每次更新后重新安装全局包
 
-
-
 ## 插件使用
 
 ### 概念说明
 
 根据 yapi 的层级划分，可以分为以下三个概念：
 
-`分组`：可以理解为业务线，例如公司下的部门A，部门B，部门C等等…
+`分组`：可以理解为业务线，例如公司下的部门 A，部门 B，部门 C 等等…
 
-`项目`：可以理解为后端的微服务，例如 部门A下的`营销` 下面会分为 `market_api`、`admin_api`、`wechat_api`等…
+`项目`：可以理解为后端的微服务，例如 部门 A 下的`营销` 下面会分为 `market_api`、`admin_api`、`wechat_api`等…
 
 `模块`：可以理解为某个服务中的业务模块，例如 `营销`下面`market_api`服务的`周年庆活动`
 
 层级关系：`分组` → `项目` → `模块`
 
-y2t支持的细粒度在`模块`这一层，只能针对模块进行生成
-
-
+y2t 支持的细粒度在`模块`这一层，只能针对模块进行生成
 
 ### 全局包使用方式
 
@@ -42,8 +45,6 @@ $ y2t -i
 // 根据项目修改配置后
 $ y2t -g
 ```
-
-
 
 #### 完整功能列表：
 
@@ -57,23 +58,19 @@ Options:
   -d, --diff      当前项目Diff
 ```
 
-* `-v, --version`：获取包的版本号
-* `-i, --init`：初始化配置文件，会放在项目当前执行目录下的ygt.config.js
-* `-g, --generate`：根据配置生成接口文件，当没有配置时会初始化默认配置
-* `-r, --remove`：根据移除本地缓存，主要用于当本地文件变更时，diff失败时重置
-* `-d, --diff`：根据本地缓存进行接口对比，获取更新的模块
+- `-v, --version`：获取包的版本号
+- `-i, --init`：初始化配置文件，会放在项目当前执行目录下的 ygt.config.js
+- `-g, --generate`：根据配置生成接口文件，当没有配置时会初始化默认配置
+- `-r, --remove`：根据移除本地缓存，主要用于当本地文件变更时，diff 失败时重置
+- `-d, --diff`：根据本地缓存进行接口对比，获取更新的模块
 
-
-
-### vscode插件使用方式
+### vscode 插件使用方式
 
 #### 功能入口
 
 插件安装完成后，会在 Vs Code 底部工具栏新增`Work`、`Y2T`、`Y2T-DIFF`按钮
 
 ![Snipaste_2021-08-04_16-07-56](https://wynne-typora.oss-cn-beijing.aliyuncs.com/typora/Snipaste_2021-08-04_16-07-56.png)
-
-
 
 #### 工作区划分 Work
 
@@ -99,8 +96,6 @@ Options:
 
 ![image-20210804161024614](https://wynne-typora.oss-cn-beijing.aliyuncs.com/typora/image-20210804161024614.png)
 
-
-
 ## 配置文件
 
 工具默认会去寻找当前工作区的`ygt.config.js`文件，该文件默认导出一个对象
@@ -116,14 +111,15 @@ module.exports = {
   // Yapi网址链接
   originUrl: 'https://yapi.xxxx.cn',
   // 请求声明模块
-  fetchModule: 'import { AxiosPromise as RequestPromise , AxiosRequestConfig as RequestConfig } from "axios";',
+  fetchModule:
+    'import { AxiosPromise as RequestPromise , AxiosRequestConfig as RequestConfig } from "axios";',
   // 输出目录
   outDir: './src/apis',
   // 项目跟请求方法映射
   projectMapping: {
-  	// 项目跟请求方法映射（projectId为生成目录id）
-  	// 参考url https://yapi.xxxx.cn/project/216/interface/api
-  	// 其中216就是projectId,当未配置时y2t也会有相应的projectId提示
+    // 项目跟请求方法映射（projectId为生成目录id）
+    // 参考url https://yapi.xxxx.cn/project/216/interface/api
+    // 其中216就是projectId,当未配置时y2t也会有相应的projectId提示
     216: {
       exportName: 'API',
       // 返回报文泛式
@@ -136,24 +132,22 @@ module.exports = {
   tsIgnore: true,
   // 忽略eslint
   esLintIgnore: true,
-};
-
+}
 ```
 
 ### 配置具体说明
 
-* `account`：账号，这里不使用yapi的token主要有两个原因：
-  1. 为了能够根据账号进行yapi的权限区分
-  2. token只能获取到`项目`级别，无法进行分组级别的筛选
-* `password`：密码
-* `originUrl`：Yapi 网址地址
-* `outDir`：输出目录，相对于当前工作区的根目录
-* `fetchModule`：请求方法声明模块，这里主要是防止对`axios`进行了二次封装的场景下可以正确定义
-* `projectMapping`：项目映射。在微服务盛行的现在一个工程中可能会有多个 api 地址，所以这里按照`项目id`进行了请求方法映射。
-  * `projectId`：项目 ID，例如url:https://xxx.xxx.com/project/216/interface/api，其中216即为项目ID
-  * `exportName`：请求方法名称，为了兼容不同的请求库，所以生成的代码中不会直接生成 ajax 请求方法，需要外部传入，这里的`exportName`一般就是你配置好了的`axios`实例
-  * `wrapper`：默认的返回体，如果接口有默认的返回包体时，可以通过`wrapper`定义 response，其中`T`代表返回的具体 data
-* `requestFilePath`：请求方法的文件路径，也就是封装`axios`请求方法的文件路径，这里最好使用`@`别名或者`src`等相对路径
-* `tsIgnore`：是否开启`tslint`忽略
-* `esLintIgnore`：是否开启`esLintIgnore`忽略
-
+- `account`：账号，这里不使用 yapi 的 token 主要有两个原因：
+  1. 为了能够根据账号进行 yapi 的权限区分
+  2. token 只能获取到`项目`级别，无法进行分组级别的筛选
+- `password`：密码
+- `originUrl`：Yapi 网址地址
+- `outDir`：输出目录，相对于当前工作区的根目录
+- `fetchModule`：请求方法声明模块，这里主要是防止对`axios`进行了二次封装的场景下可以正确定义
+- `projectMapping`：项目映射。在微服务盛行的现在一个工程中可能会有多个 api 地址，所以这里按照`项目id`进行了请求方法映射。
+  - `projectId`：项目 ID，例如 url:https://xxx.xxx.com/project/216/interface/api，其中216即为项目ID
+  - `exportName`：请求方法名称，为了兼容不同的请求库，所以生成的代码中不会直接生成 ajax 请求方法，需要外部传入，这里的`exportName`一般就是你配置好了的`axios`实例
+  - `wrapper`：默认的返回体，如果接口有默认的返回包体时，可以通过`wrapper`定义 response，其中`T`代表返回的具体 data
+- `requestFilePath`：请求方法的文件路径，也就是封装`axios`请求方法的文件路径，这里最好使用`@`别名或者`src`等相对路径
+- `tsIgnore`：是否开启`tslint`忽略
+- `esLintIgnore`：是否开启`esLintIgnore`忽略
