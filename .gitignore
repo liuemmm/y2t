@@ -1,5 +1,6 @@
 node_modules
 src/apis
+src/services
 src/utils/data
 vscode-yapi-generate/out
 vscode-yapi-generate/.vscode

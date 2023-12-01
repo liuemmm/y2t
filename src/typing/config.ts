@@ -1,7 +1,7 @@
 // 项目映射
 export interface IProjectMapping {
   // api方法
-  exportName: string,
+  exportName: string
   // 通用封装
   wrapper: string
 }
@@ -9,21 +9,25 @@ export interface IProjectMapping {
 // 配置文件
 export interface IConfig {
   // 账号
-  account: string,
+  account: string
   // 密码
-  password: string,
+  password: string
   // 原地址
-  originUrl: string,
+  originUrl: string
   // 输出目录
-  outDir: string,
+  outDir: string
   // 请求声明模块
-  fetchModule: string,
+  fetchModule: string
   // 项目跟请求方法映射
-  projectMapping: { [key: number]: IProjectMapping },
+  projectMapping: { [key: number]: IProjectMapping }
   // 请求文件路径
-  requestFilePath: string,
+  requestFilePath: string
   // 忽略ts校验
-  tsIgnore: boolean,
+  tsIgnore: boolean
   // 忽略eslint
   esLintIgnore: boolean
+  // api模版
+  apiTemplate: string
+  // apibody模版
+  apiBodyTemplate: string
 }

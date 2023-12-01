@@ -5,6 +5,9 @@
 
 `vscode插件`：在插件市场搜索`y2t-f`，安装即可
 
+新增功能请求模版可从 ygt.config.js 中配置
+apiTemplate,apiBodyTemplate
+
 以下类容与[原文](https://github.com/SewerKing/y2t#readme)相同
 
 > Yapi 生成 Typescript`请求方法`及`声明文件`工具
